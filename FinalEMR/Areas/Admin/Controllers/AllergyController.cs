@@ -13,8 +13,8 @@ using Microsoft.AspNetCore.Mvc.ActionConstraints;
 namespace FinalEMR.Areas.Admin.Controllers
 {
     [Area("Admin")]
-/*    [Authorize(Roles = SD.Role_Admin)]
-*/    public class AllergyController : Controller
+    [Authorize(Roles = SD.Role_Admin)]
+    public class AllergyController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
 

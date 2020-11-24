@@ -17,8 +17,8 @@ using FinalEMR.Utility;
 namespace FinalEMR.Areas.Admin.Controllers
 {
     [Area("Admin")]
-/*    [Authorize(Roles = SD.Role_Admin)]
-*/    public class PatientController : Controller
+    [Authorize(Roles = SD.Role_Admin)]
+    public class PatientController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _hostEnvironment;

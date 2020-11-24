@@ -12,8 +12,8 @@ using Microsoft.AspNetCore.Mvc.ActionConstraints;
 namespace FinalEMR.Areas.Admin.Controllers
 {
     [Area("Admin")]
-/*    [Authorize(Roles = SD.Role_Admin)]
-*/    public class NurseController : Controller
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Doctor)]
+    public class NurseController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
 

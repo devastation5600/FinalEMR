@@ -16,7 +16,7 @@ namespace FinalEMR.Models
         public string State { get; set; }
         public string PostalCode { get; set; }
 
-        public int DoctorId { get; set; }
+        public int? DoctorId { get; set; }
         [ForeignKey("DoctorId")]
         public Doctor Doctor { get; set; }
 

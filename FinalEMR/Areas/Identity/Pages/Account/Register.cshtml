@@ -66,6 +66,10 @@
                     @Html.DropDownListFor(m => m.Input.Role, Model.Input.RoleList, "Please Select a Role", new { @class = "form-control" })
                 </div>
                 <div class="form-group">
+                    <label asp-for="Input.NurseId"></label>
+                    @Html.DropDownListFor(m => m.Input.NurseId, Model.Input.NurseList, "Please Select a Nurse", new { @class = "form-control" })
+                </div>
+                <div class="form-group">
                     <label asp-for="Input.DoctorId"></label>
                     @Html.DropDownListFor(m => m.Input.DoctorId, Model.Input.DoctorList, "Please Select a Doctor", new { @class = "form-control" })
                 </div>
