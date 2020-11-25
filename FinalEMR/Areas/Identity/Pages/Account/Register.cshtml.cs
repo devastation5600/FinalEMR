@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -12,7 +11,6 @@ using FinalEMR.Models;
 using FinalEMR.Utility;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +30,6 @@ namespace FinalEMR.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IWebHostEnvironment _hostEnvironment;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -40,11 +37,9 @@ namespace FinalEMR.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager,
-            IUnitOfWork unitOfWork,
-            IWebHostEnvironment hostEnvironment)
+            IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
-            _hostEnvironment = hostEnvironment;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
@@ -89,7 +84,6 @@ namespace FinalEMR.Areas.Identity.Pages.Account
             public int? DoctorId { get; set; }
             public int? NurseId { get; set; }
             public string Role { get; set; }
-
             public IEnumerable<SelectListItem> DoctorList { get; set; }
             public IEnumerable<SelectListItem> NurseList { get; set; }
             public IEnumerable<SelectListItem> RoleList { get; set; }
@@ -144,6 +138,26 @@ namespace FinalEMR.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    
+                    if (!await _roleManager.RoleExistsAsync(SD.Role_Admin))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin));
+                    }
+
+                    if (!await _roleManager.RoleExistsAsync(SD.Role_Doctor))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(SD.Role_Doctor));
+                    }
+
+                    if (!await _roleManager.RoleExistsAsync(SD.Role_Privi_Nurse))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(SD.Role_Privi_Nurse));
+                    }
+
+                    if (!await _roleManager.RoleExistsAsync(SD.Role_Nurse))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(SD.Role_Nurse));
+                    }
 
                     if (user.Role == null)
                     {
@@ -167,40 +181,12 @@ namespace FinalEMR.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code},
                         protocol: Request.Scheme);
 
-                    var PathToFile = _hostEnvironment.WebRootPath + Path.DirectorySeparatorChar.ToString()
-                        + "Templates" + Path.DirectorySeparatorChar.ToString() + "EmailTemplates"
-                        + Path.DirectorySeparatorChar.ToString() + "Confirm_Account_Registration.html";
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    var subject = "Confirm Account Registration";
-                    string HtmlBody = "";
-                    using (StreamReader streamReader = System.IO.File.OpenText(PathToFile))
-                    {
-                        HtmlBody = streamReader.ReadToEnd();
-                    }
-
-                    //{0} : Subject  
-                    //{1} : DateTime  
-                    //{2} : Name  
-                    //{3} : Email  
-                    //{4} : Message  
-                    //{5} : callbackURL  
-
-                    string Message = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.";
-
-                    string messageBody = string.Format(HtmlBody,
-                        subject,
-                        String.Format("{0:dddd, d MMMM yyyy}", DateTime.Now),
-                        user.Name,
-                        user.Email,
-                        Message,
-                        callbackUrl
-                        );
-
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", messageBody);
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email });
+                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email});
                     }
                     else
                     {
@@ -211,7 +197,7 @@ namespace FinalEMR.Areas.Identity.Pages.Account
                         }
                         else
                         {
-                            //admin is registering a new user
+                            //Admin registering a new user
                             return RedirectToAction("Index", "User", new { Area = "Admin" });
                         }
                     }
@@ -221,24 +207,6 @@ namespace FinalEMR.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-            Input = new InputModel()
-            {
-                NurseList = _unitOfWork.Nurse.GetAll().Select(i => new SelectListItem
-                {
-                    Text = i.Name,
-                    Value = i.Id.ToString()
-                }),
-                DoctorList = _unitOfWork.Doctor.GetAll().Select(i => new SelectListItem
-                {
-                    Text = i.Name,
-                    Value = i.Id.ToString()
-                }),
-                RoleList = _roleManager.Roles.Where(u => u.Name != SD.Role_Nurse).Select(x => x.Name).Select(i => new SelectListItem
-                {
-                    Text = i,
-                    Value = i
-                })
-            };
 
             // If we got this far, something failed, redisplay form
             return Page();

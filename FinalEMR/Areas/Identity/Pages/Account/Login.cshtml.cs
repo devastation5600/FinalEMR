@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using FinalEMR.DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Http;
+using FinalEMR.Utility;
 
 namespace FinalEMR.Areas.Identity.Pages.Account
 {
@@ -22,15 +24,12 @@ namespace FinalEMR.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly IUnitOfWork _unitOfWork;
 
         public LoginModel(SignInManager<IdentityUser> signInManager,
             ILogger<LoginModel> logger,
             UserManager<IdentityUser> userManager,
-            IEmailSender emailSender,
-            IUnitOfWork unitOfWork)
+            IEmailSender emailSender)
         {
-            _unitOfWork = unitOfWork;
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
@@ -89,21 +88,13 @@ namespace FinalEMR.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
-                    var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Email == Input.Email);
-
-                    //Come Back To Tweak for Appointments & Billing
-                 /*   int count = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == user.Id).Count();
-                    HttpContext.Session.SetInt32(SD.ssShoppingCart, count);*/
-
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
-                ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
                 }
-
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("User account locked out.");
@@ -146,7 +137,6 @@ namespace FinalEMR.Areas.Identity.Pages.Account
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
             ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             return Page();
         }
     }
