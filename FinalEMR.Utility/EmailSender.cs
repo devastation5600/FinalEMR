@@ -25,7 +25,7 @@ namespace FinalEMR.Utility
         private Task Execute(string sendGridKey, string subject, string message, string email)
         {
             var client = new SendGridClient(sendGridKey);
-            var from = new EmailAddress("admint@emr.com", "EMR");
+            var from = new EmailAddress("final.emr1@gmail.com", "EMR");
             var to = new EmailAddress(email, "End User");
             var msg = MailHelper.CreateSingleEmail(from, to, subject, "", message);
             return client.SendEmailAsync(msg);
