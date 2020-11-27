@@ -16,6 +16,7 @@ using FinalEMR.DataAccess.Repository.IRepository;
 using FinalEMR.DataAccess.Repository;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using FinalEMR.Utility;
+using FinalEMR.DataAccess.Initiliazer;
 
 namespace FinalEMR
 {
@@ -39,6 +40,7 @@ namespace FinalEMR
             services.AddSingleton<IEmailSender, EmailSender>();
             services.Configure<EmailOptions>(Configuration);
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IDbInitializer, DbInitializer>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation(); ;
             services.AddRazorPages();
             services.ConfigureApplicationCookie(options =>
@@ -47,10 +49,17 @@ namespace FinalEMR
                 options.LogoutPath = $"/Identity/Account/Logout";
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
             });
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(1);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDbInitializer dbInitializer)
         {
             if (env.IsDevelopment())
             {
@@ -67,12 +76,16 @@ namespace FinalEMR
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            dbInitializer.Initialize();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapAreaControllerRoute(
+                    name: "MyAreaPatients",
+                    areaName: "Patient",
+                    pattern: "Patient/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{area=Staff}/{controller=Home}/{action=Index}/{id?}");

@@ -38,12 +38,12 @@ namespace FinalEMR.Areas.Admin.Controllers
             PatientVM patientVM = new PatientVM()
             {
                 Patient = new Patient(),
-                PrescriptionList = _unitOfWork.Prescription.GetAll().Select(i => new SelectListItem
+                PrescriptionList = (ICollection<SelectListItem>)_unitOfWork.Prescription.GetAll().Select(i => new SelectListItem
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()
                 }),
-                AllergyList = _unitOfWork.Allergy.GetAll().Select(i => new SelectListItem
+                AllergyList = (ICollection<SelectListItem>)_unitOfWork.Allergy.GetAll().Select(i => new SelectListItem
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()
