@@ -4,13 +4,11 @@ using FinalEMR.Utility;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace FinalEMR.DataAccess.Initiliazer
 {
-    public class DbInitializer: IDbInitializer
+    public class DbInitializer : IDbInitializer
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<IdentityUser> _userManager;
@@ -27,7 +25,7 @@ namespace FinalEMR.DataAccess.Initiliazer
         {
             try
             {
-                if(_db.Database.GetPendingMigrations().Count() > 0)
+                if (_db.Database.GetPendingMigrations().Count() > 0)
                 {
                     _db.Database.Migrate();
                 }
@@ -49,7 +47,7 @@ namespace FinalEMR.DataAccess.Initiliazer
                 Email = "devastation5600@gmail.com",
                 EmailConfirmed = true,
                 Name = "System Admin"
-            },"Password1!").GetAwaiter().GetResult();
+            }, "Password1!").GetAwaiter().GetResult();
 
             ApplicationUser user = _db.ApplicationUsers.Where(u => u.Email == "devastation5600@gmail.com ").FirstOrDefault();
 

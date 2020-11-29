@@ -121,7 +121,7 @@ namespace FinalEMR.Areas.Identity.Pages.Account
             {
                 var user = new ApplicationUser 
                 {
-                    UserName = Input.Email,
+                    UserName = Input.Email.TrimEnd('@'),
                     Email = Input.Email,
                     DoctorId = Input.DoctorId,
                     NurseId = Input.NurseId,

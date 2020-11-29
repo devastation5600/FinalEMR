@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using FinalEMR.DataAccess.Data;
+using Microsoft.Data.SqlClient;
 using FinalEMR.DataAccess.Repository.IRepository;
 using FinalEMR.DataAccess.Repository;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -50,11 +51,21 @@ namespace FinalEMR
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
             });
             services.AddDistributedMemoryCache();
+            services.AddDataProtection();
+            //Make session limited
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(1);
+                options.IdleTimeout = TimeSpan.FromMinutes(5);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
+            });
+
+            
+            //Add Lockout attempts
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Lockout.MaxFailedAccessAttempts = 3;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(10); 
             });
         }
 
@@ -82,10 +93,6 @@ namespace FinalEMR
             dbInitializer.Initialize();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapAreaControllerRoute(
-                    name: "MyAreaPatients",
-                    areaName: "Patient",
-                    pattern: "Patient/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{area=Staff}/{controller=Home}/{action=Index}/{id?}");

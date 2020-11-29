@@ -6,7 +6,7 @@
         <div class="card">
             <div class="card-header bg-light text-light ml-0 row container">
                 <div class="col-12 col-md-6">
-                    <h1 class="text-primary">@Model.Patient.FullName</h1>
+                    <h1 class="text-primary">@Model.Patient.FirstName  @Model.Patient.LastName</h1>
                 </div>
                 <div class="col-12 col-md-6 text-md-right pt-4">
                     <span class="badge badge-success pt-2" style="height:30px;">@Model.Patient.Prescription.Name</span>
@@ -69,7 +69,7 @@
                         <a asp-action="Index" class="btn btn-success form-control  btn-square btn-lg" style="height:50px;">Back to List</a>
                     </div>
                     <div class="col-12 col-md-6 pb-1">
-                        <button type="submit" value="Add to Record" class="btn btn-primary btn-square btn-lg form-control" style="height:50px;"@* asp-route-id="@Model"*@>Add Record</button>
+                        <button type="submit" value="Add to Record" class="btn btn-primary btn-square btn-lg form-control" style="height:50px;">Add Record</button>
                     </div>
                 </div>
             </div>  
