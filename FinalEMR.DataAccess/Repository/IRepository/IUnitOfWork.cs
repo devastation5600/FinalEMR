@@ -11,6 +11,9 @@ namespace FinalEMR.DataAccess.Repository.IRepository
         IPatientRepository Patient { get; }
         INurseRepository Nurse { get; }
         IDoctorRepository Doctor { get; }
+        IRecordRepository Record { get; }
+        IRecordHeaderRepository RecordHeader { get; }
+        IPatientDetailsRepository PatientDetails { get; }
         IApplicationUserRepository ApplicationUser { get; }
 
 

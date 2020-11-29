@@ -12,3 +12,4 @@ namespace FinalEMR.Models.ViewModels
         public IEnumerable<SelectListItem> AllergyList { get; set; }
     }
 }
+   

@@ -4,14 +4,16 @@ using FinalEMR.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FinalEMR.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201126202440_AddRecordsRecordHeaderAndPatientDetailsToDb")]
+    partial class AddRecordsRecordHeaderAndPatientDetailsToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,9 +32,43 @@ namespace FinalEMR.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PatientId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("PatientId");
+
                     b.ToTable("Allergies");
+                });
+
+            modelBuilder.Entity("FinalEMR.Models.Appointments", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("AppointmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PatientEmail")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PatientName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PatientPhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("FinalEMR.Models.Doctor", b =>
@@ -52,6 +88,9 @@ namespace FinalEMR.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PatientId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -65,6 +104,8 @@ namespace FinalEMR.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
 
                     b.ToTable("Doctors");
                 });
@@ -86,6 +127,9 @@ namespace FinalEMR.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PatientId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -102,6 +146,8 @@ namespace FinalEMR.DataAccess.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
 
                     b.ToTable("Nurse");
                 });
@@ -157,10 +203,6 @@ namespace FinalEMR.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AllergyId");
-
-                    b.HasIndex("PrescriptionId");
-
                     b.ToTable("Patients");
                 });
 
@@ -197,7 +239,12 @@ namespace FinalEMR.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PatientId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
 
                     b.ToTable("Prescriptions");
                 });
@@ -212,14 +259,17 @@ namespace FinalEMR.DataAccess.Migrations
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("PatientId")
+                    b.Property<string>("PatientId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("PatientId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Records");
                 });
@@ -482,19 +532,32 @@ namespace FinalEMR.DataAccess.Migrations
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
-            modelBuilder.Entity("FinalEMR.Models.Patient", b =>
+            modelBuilder.Entity("FinalEMR.Models.Allergy", b =>
                 {
-                    b.HasOne("FinalEMR.Models.Allergy", "Allergy")
-                        .WithMany()
-                        .HasForeignKey("AllergyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("FinalEMR.Models.Patient", null)
+                        .WithMany("Allergies")
+                        .HasForeignKey("PatientId");
+                });
 
-                    b.HasOne("FinalEMR.Models.Prescription", "Prescription")
-                        .WithMany()
-                        .HasForeignKey("PrescriptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            modelBuilder.Entity("FinalEMR.Models.Appointments", b =>
+                {
+                    b.HasOne("FinalEMR.Models.Patient", null)
+                        .WithMany("Appointments")
+                        .HasForeignKey("PatientId");
+                });
+
+            modelBuilder.Entity("FinalEMR.Models.Doctor", b =>
+                {
+                    b.HasOne("FinalEMR.Models.Patient", null)
+                        .WithMany("Doctors")
+                        .HasForeignKey("PatientId");
+                });
+
+            modelBuilder.Entity("FinalEMR.Models.Nurse", b =>
+                {
+                    b.HasOne("FinalEMR.Models.Patient", null)
+                        .WithMany("Nurses")
+                        .HasForeignKey("PatientId");
                 });
 
             modelBuilder.Entity("FinalEMR.Models.PatientDetails", b =>
@@ -512,6 +575,13 @@ namespace FinalEMR.DataAccess.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("FinalEMR.Models.Prescription", b =>
+                {
+                    b.HasOne("FinalEMR.Models.Patient", null)
+                        .WithMany("Prescriptions")
+                        .HasForeignKey("PatientId");
+                });
+
             modelBuilder.Entity("FinalEMR.Models.Record", b =>
                 {
                     b.HasOne("FinalEMR.Models.ApplicationUser", "ApplicationUser")
@@ -520,9 +590,7 @@ namespace FinalEMR.DataAccess.Migrations
 
                     b.HasOne("FinalEMR.Models.Patient", "Patient")
                         .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("FinalEMR.Models.RecordHeader", b =>

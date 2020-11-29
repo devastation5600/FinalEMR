@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 namespace FinalEMR.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Doctor)]
+    [Authorize(Roles = SD.Role_Admin)]
     public class UserController : Controller
     {
         //directrly Using Application Db Context vs. Repository Pattern
