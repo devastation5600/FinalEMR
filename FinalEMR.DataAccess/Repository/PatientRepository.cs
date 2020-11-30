@@ -41,7 +41,6 @@ namespace FinalEMR.DataAccess.Repository
                 objFromDb.PrescriptionId = patient.PrescriptionId;
                 objFromDb.DoctorId = patient.DoctorId;
                 objFromDb.NurseId = patient.NurseId;
-
             }
         }
     }

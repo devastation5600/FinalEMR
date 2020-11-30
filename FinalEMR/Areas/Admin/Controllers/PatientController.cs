@@ -137,6 +137,16 @@ namespace FinalEMR.Areas.Admin.Controllers
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()
+                });                
+                patientVM.DoctorList = _unitOfWork.Doctor.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                });                
+                patientVM.NurseList = _unitOfWork.Nurse.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
                 });
                 patientVM.DoctorList = _unitOfWork.Doctor.GetAll().Select(i => new SelectListItem
                 {

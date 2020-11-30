@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Azure.Identity;
 
 namespace FinalEMR
 {
@@ -19,17 +18,16 @@ namespace FinalEMR
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+          //uncomment to add to azure
+            /*.ConfigureAppConfiguration((context, config) =>
+            {
+                var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
+                config.AddAzureKeyVault(
+                keyVaultEndpoint,
+                new DefaultAzureCredential());
+            })*/
+            .ConfigureWebHostDefaults(webBuilder =>
 
-            //Uncomment below to push to azure
-/*.ConfigureAppConfiguration((context, config) =>
-{
-var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
-config.AddAzureKeyVault(
-keyVaultEndpoint,
-new DefaultAzureCredential());
-})*/
-
-                .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
                 });
