@@ -121,7 +121,7 @@ namespace FinalEMR.Areas.Identity.Pages.Account
             {
                 var user = new ApplicationUser 
                 {
-                    UserName = Input.Email,
+                    UserName = Input.Email.TrimEnd('@'),
                     Email = Input.Email,
                     DoctorId = Input.DoctorId,
                     NurseId = Input.NurseId,
@@ -139,26 +139,6 @@ namespace FinalEMR.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
                     
-                    if (!await _roleManager.RoleExistsAsync(SD.Role_Admin))
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin));
-                    }
-
-                    if (!await _roleManager.RoleExistsAsync(SD.Role_Doctor))
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole(SD.Role_Doctor));
-                    }
-
-                    if (!await _roleManager.RoleExistsAsync(SD.Role_Privi_Nurse))
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole(SD.Role_Privi_Nurse));
-                    }
-
-                    if (!await _roleManager.RoleExistsAsync(SD.Role_Nurse))
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole(SD.Role_Nurse));
-                    }
-
                     if (user.Role == null)
                     {
                         await _userManager.AddToRoleAsync(user, SD.Role_Nurse);
@@ -207,7 +187,24 @@ namespace FinalEMR.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-
+            Input = new InputModel()
+            {
+                NurseList = _unitOfWork.Nurse.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                }),
+                DoctorList = _unitOfWork.Doctor.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                }),
+                RoleList = _roleManager.Roles.Where(u => u.Name != SD.Role_Nurse).Select(x => x.Name).Select(i => new SelectListItem
+                {
+                    Text = i,
+                    Value = i
+                })
+            };
             // If we got this far, something failed, redisplay form
             return Page();
         }

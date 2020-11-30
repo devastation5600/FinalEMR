@@ -19,6 +19,9 @@ namespace FinalEMR.DataAccess.Repository
             Patient = new PatientRepository(_db);
             Doctor = new DoctorRepository(_db);
             Nurse = new NurseRepository(_db);
+            Record = new RecordRepository(_db);
+            RecordHeader = new RecordHeaderRepository(_db);
+            PatientDetails = new PatientDetailsRepository(_db);
             ApplicationUser = new ApplicationUserRepository(_db);
         }
         public IPrescriptionRepository Prescription { get; private set; }
@@ -27,6 +30,9 @@ namespace FinalEMR.DataAccess.Repository
         public INurseRepository Nurse { get; private set; }
         public IDoctorRepository Doctor { get; private set; }
         public IApplicationUserRepository ApplicationUser { get; private set; }
+        public IRecordRepository Record { get; private set; }
+        public IRecordHeaderRepository RecordHeader { get; private set; }
+        public IPatientDetailsRepository PatientDetails { get; private set; }
         public ISP_Call SP_Call { get; private set; }
 
         public void Dispose()
