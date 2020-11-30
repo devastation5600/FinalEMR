@@ -39,8 +39,9 @@ namespace FinalEMR.DataAccess.Repository
                 objFromDb.SocialSecurity = patient.SocialSecurity;
                 objFromDb.AllergyId = patient.AllergyId;
                 objFromDb.PrescriptionId = patient.PrescriptionId;
+                objFromDb.DoctorId = patient.DoctorId;
+                objFromDb.NurseId = patient.NurseId;
             }
-
         }
     }
 }

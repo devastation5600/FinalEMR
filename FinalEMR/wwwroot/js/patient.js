@@ -11,14 +11,16 @@ function loadDataTable() {
             "url": "/Admin/Patient/GetAll"
         },
         "columns": [
-            { "data": "firstName", "width": "12%" },
+            { "data": "firstName", "width": "10%" },
             { "data": "lastName", "width": "12%" },
-            { "data": "dateOfBirth", "width": "16%" },
-            { "data": "height", "width": "8%" },
-            { "data": "weight", "width": "8%" },
-            { "data": "prescription.name", "width": "12%" },
+            { "data": "dateOfBirth", "width": "10%" },
+            { "data": "height", "width": "5%" },
+            { "data": "weight", "width": "5%" },
+            { "data": "prescription.name", "width": "10%" },
             { "data": "comments", "width": "10%" },
-            { "data": "allergy.name", "width": "10%" },
+            { "data": "allergy.name", "width": "8%" },
+            { "data": "doctor.name", "width": "10%" },
+            { "data": "nurse.name", "width": "10%" },
             {
                 "data": "id",
                 "render": function (data) {
@@ -32,7 +34,7 @@ function loadDataTable() {
                                 </a>
                             </div>
                            `;
-                }, "width": "12%"
+                }, "width": "10%"
             }
         ]
     });

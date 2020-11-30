@@ -39,6 +39,7 @@ namespace FinalEMR
             services.AddSingleton<IEmailSender, EmailSender>();
             services.Configure<EmailOptions>(Configuration);
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IDbInitializer, DbInitializer>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation(); ;
             services.AddRazorPages();
             services.ConfigureApplicationCookie(options =>
