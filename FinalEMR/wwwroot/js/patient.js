@@ -19,6 +19,8 @@ function loadDataTable() {
             { "data": "prescription.name", "width": "12%" },
             { "data": "comments", "width": "10%" },
             { "data": "allergy.name", "width": "10%" },
+            { "data": "doctor.id", "width": "5%" },
+            { "data": "nurse.id", "width": "5%" },
             {
                 "data": "id",
                 "render": function (data) {

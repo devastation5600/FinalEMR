@@ -47,8 +47,18 @@ namespace FinalEMR.Areas.Admin.Controllers
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()
+                }),
+                DoctorList = _unitOfWork.Doctor.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                }),
+                NurseList = _unitOfWork.Nurse.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
                 })
-            };
+        };
             if (id == null)
             {
                 //this is for create
@@ -128,6 +138,16 @@ namespace FinalEMR.Areas.Admin.Controllers
                     Text = i.Name,
                     Value = i.Id.ToString()
                 });
+                patientVM.DoctorList = _unitOfWork.Doctor.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                });
+                patientVM.NurseList = _unitOfWork.Nurse.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                });
                 if (patientVM.Patient.Id != 0)
                 {
                     patientVM.Patient = _unitOfWork.Patient.Get(patientVM.Patient.Id);
@@ -140,7 +160,7 @@ namespace FinalEMR.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var allObj = _unitOfWork.Patient.GetAll(includeProperties: "Prescription,Allergy");
+            var allObj = _unitOfWork.Patient.GetAll(includeProperties: "Prescription,Allergy,Doctor,Nurse");
             return Json(new { data = allObj });
         }
 

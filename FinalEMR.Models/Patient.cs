@@ -69,6 +69,15 @@ namespace FinalEMR.Models
 
         [ForeignKey("PrescriptionId")]
         public Prescription Prescription { get; set; }
+
+        [Required]
+        public string DoctorId { get; set; }
+        [ForeignKey("Id")]
+        public Doctor Doctor { get; set; }
+
+        public string NurseId { get; set; }
+        [ForeignKey("Id")]
+        public Nurse Nurse { get; set; }
     }
 }
 

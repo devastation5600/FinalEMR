@@ -68,7 +68,7 @@
                     <label asp-for="Patient.SocialSecurity"></label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="Patient.SocialSecurity" class="form-control" type="text"/>
+                    <input asp-for="Patient.SocialSecurity" class="form-control" type="text" />
                     <span asp-validation-for="Patient.SocialSecurity" class="text-danger"></span>
                 </div>
             </div>
@@ -98,6 +98,26 @@
                     @Html.DropDownListFor(m => m.Patient.AllergyId, Model.AllergyList as IEnumerable<SelectListItem>, "-Select a Allergy",
                    new { @class = "form-control" })
                     <span asp-validation-for="Patient.AllergyId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    Doctors
+                </div>
+                <div class="col-8">
+                    @Html.DropDownListFor(m => m.Patient.DoctorId, Model.DoctorList as IEnumerable<SelectListItem>, "-Select a Doctor",
+                   new { @class = "form-control" })
+                    <span asp-validation-for="Patient.DoctorId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    Nurses
+                </div>
+                <div class="col-8">
+                    @Html.DropDownListFor(m => m.Patient.NurseId, Model.NurseList as IEnumerable<SelectListItem>, "-Select a Nurse",
+                   new { @class = "form-control" })
+                    <span asp-validation-for="Patient.NurseId" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
