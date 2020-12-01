@@ -36,8 +36,21 @@
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item text-black-50" asp-area="Admin" asp-controller="Prescription" asp-action="Index">Prescription</a>
                                     <a class="dropdown-item text-black-50" asp-area="Admin" asp-controller="Allergy" asp-action="Index">Allergy</a>
-@*                                    <a class="dropdown-item text-black-50" asp-area="Admin" asp-controller="Appointment" asp-action="Index">Appointment</a>
-*@                                    <a class="dropdown-item text-black-50" asp-area="Admin" asp-controller="Patient" asp-action="Index">Patient</a>
+                                    <a class="dropdown-item text-black-50" asp-area="Admin" asp-controller="Patient" asp-action="Index">Patient</a>
+                                </div>
+                            </li>
+                        }
+                        @*change roles based on views*@
+                        @if (User.IsInRole(SD.Role_Nurse))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Content Management
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item text-black-50" asp-area="Admin" asp-controller="Prescription" asp-action="Index">Prescription</a>
+                                    <a class="dropdown-item text-black-50" asp-area="Admin" asp-controller="Allergy" asp-action="Index">Allergy</a>
+                                    <a class="dropdown-item text-black-50" asp-area="Admin" asp-controller="Patient" asp-action="Index">Patient</a>
                                 </div>
                             </li>
                         }
@@ -53,8 +66,8 @@
                                     <a class="dropdown-item text-black-50" asp-area="Admin" asp-controller="User" asp-action="Index">User</a>
                                 </div>
                             </li>
-                         }
-                            
+                        }
+
                     </ul>
                 </div>
             </div>

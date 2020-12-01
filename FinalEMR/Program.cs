@@ -18,6 +18,7 @@ namespace FinalEMR
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+          //uncomment to add to azure
             /*.ConfigureAppConfiguration((context, config) =>
             {
                 var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
@@ -26,6 +27,7 @@ namespace FinalEMR
                 new DefaultAzureCredential());
             })*/
             .ConfigureWebHostDefaults(webBuilder =>
+
                 {
                     webBuilder.UseStartup<Startup>();
                 });

@@ -12,6 +12,8 @@ namespace FinalEMR.Models.ViewModels
         public IEnumerable<SelectListItem> DoctorList { get; set; }
         public IEnumerable<SelectListItem> NurseList { get; set; }
         public IEnumerable<SelectListItem> AllergyList { get; set; }
+        public IEnumerable<SelectListItem> DoctorList { get; set; }
+        public IEnumerable<SelectListItem> NurseList { get; set; }
     }
 }
    
