@@ -9,10 +9,6 @@ namespace FinalEMR.Models
     {
         public int Id { get; set; }
 
-        public int RecordId { get; set; }
-        [ForeignKey("RecordId")]
-        public RecordHeader RecordHeader { get; set; }
-
         public int PatientId { get; set; }
         [ForeignKey("PatientId")]
         public Patient Patient { get; set; }

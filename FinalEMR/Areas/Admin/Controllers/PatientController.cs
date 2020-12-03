@@ -58,7 +58,7 @@ namespace FinalEMR.Areas.Admin.Controllers
                     Text = i.Name,
                     Value = i.Id.ToString()
                 })
-            };
+        };
             if (id == null)
             {
                 //this is for create
@@ -139,6 +139,26 @@ namespace FinalEMR.Areas.Admin.Controllers
                     Value = i.Id.ToString()
                 });
                 patientVM.AllergyList = _unitOfWork.Allergy.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                });                
+                patientVM.DoctorList = _unitOfWork.Doctor.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                });                
+                patientVM.NurseList = _unitOfWork.Nurse.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                });
+                patientVM.DoctorList = _unitOfWork.Doctor.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                });
+                patientVM.NurseList = _unitOfWork.Nurse.GetAll().Select(i => new SelectListItem
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()

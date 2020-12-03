@@ -18,8 +18,6 @@ namespace FinalEMR.DataAccess.Data
         public DbSet<Patient> Patients { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
-        public DbSet<Record> Records { get; set; }
-        public DbSet<RecordHeader> RecordHeaders { get; set; }
         public DbSet<PatientDetails> PatientDetails { get; set; }
     }
 }

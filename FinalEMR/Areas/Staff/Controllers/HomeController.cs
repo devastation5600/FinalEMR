@@ -38,18 +38,18 @@ namespace FinalEMR.Areas.Staff.Controllers
         {
             var patientFromDb = _unitOfWork.Patient
                                 .GetFirstOrDefault(u => u.Id == id, includeProperties:"Prescription,Allergy");
-            Record recordObj = new Record()
+           /* Record recordObj = new Record()
             {
                 Patient = patientFromDb,
                 PatientId = patientFromDb.Id
-            };
-            return View(recordObj);
+            };*/
+            return View(/*recordObj*/);
         }
         
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public IActionResult Details(Record RecordObject)
+       /* public IActionResult Details(Record RecordObject)
         {
             RecordObject.Id = 0;
             if (ModelState.IsValid)
@@ -89,7 +89,7 @@ namespace FinalEMR.Areas.Staff.Controllers
 
             
         }
-
+*/
         public IActionResult Privacy()
         {
             return View();
