@@ -2,7 +2,7 @@
 
 namespace FinalEMR.DataAccess.Migrations
 {
-    public partial class AddStoredProcForAllergy : Migration
+    public partial class StoredPCAllergy : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -56,3 +56,4 @@ namespace FinalEMR.DataAccess.Migrations
         }
     }
 }
+

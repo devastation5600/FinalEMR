@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FinalEMR.DataAccess.Migrations
 {
-    public partial class DoctorToPatient : Migration
+    public partial class thisetterwork : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -171,7 +171,8 @@ namespace FinalEMR.DataAccess.Migrations
                     ImageUrl = table.Column<string>(nullable: true),
                     AllergyId = table.Column<int>(nullable: false),
                     PrescriptionId = table.Column<int>(nullable: false),
-                    DoctorId = table.Column<int>(nullable: false)
+                    DoctorId = table.Column<int>(nullable: false),
+                    NurseId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -186,6 +187,12 @@ namespace FinalEMR.DataAccess.Migrations
                         name: "FK_Patients_Doctors_DoctorId",
                         column: x => x.DoctorId,
                         principalTable: "Doctors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Patients_Nurse_NurseId",
+                        column: x => x.NurseId,
+                        principalTable: "Nurse",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -282,59 +289,11 @@ namespace FinalEMR.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RecordHeaders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApplicationUserId = table.Column<string>(nullable: true),
-                    LastVisit = table.Column<DateTime>(nullable: false),
-                    PhoneNumber = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RecordHeaders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RecordHeaders_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Records",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApplicationUserId = table.Column<string>(nullable: true),
-                    PatientId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Records", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Records_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Records_Patients_PatientId",
-                        column: x => x.PatientId,
-                        principalTable: "Patients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PatientDetails",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RecordId = table.Column<int>(nullable: false),
                     PatientId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -344,12 +303,6 @@ namespace FinalEMR.DataAccess.Migrations
                         name: "FK_PatientDetails_Patients_PatientId",
                         column: x => x.PatientId,
                         principalTable: "Patients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PatientDetails_RecordHeaders_RecordId",
-                        column: x => x.RecordId,
-                        principalTable: "RecordHeaders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -409,11 +362,6 @@ namespace FinalEMR.DataAccess.Migrations
                 column: "PatientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PatientDetails_RecordId",
-                table: "PatientDetails",
-                column: "RecordId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Patients_AllergyId",
                 table: "Patients",
                 column: "AllergyId");
@@ -424,24 +372,14 @@ namespace FinalEMR.DataAccess.Migrations
                 column: "DoctorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Patients_NurseId",
+                table: "Patients",
+                column: "NurseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Patients_PrescriptionId",
                 table: "Patients",
                 column: "PrescriptionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RecordHeaders_ApplicationUserId",
-                table: "RecordHeaders",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Records_ApplicationUserId",
-                table: "Records",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Records_PatientId",
-                table: "Records",
-                column: "PatientId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -465,31 +403,25 @@ namespace FinalEMR.DataAccess.Migrations
                 name: "PatientDetails");
 
             migrationBuilder.DropTable(
-                name: "Records");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "RecordHeaders");
-
-            migrationBuilder.DropTable(
-                name: "Patients");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Allergies");
+                name: "Patients");
 
             migrationBuilder.DropTable(
-                name: "Prescriptions");
+                name: "Allergies");
 
             migrationBuilder.DropTable(
                 name: "Doctors");
 
             migrationBuilder.DropTable(
                 name: "Nurse");
+
+            migrationBuilder.DropTable(
+                name: "Prescriptions");
         }
     }
 }
