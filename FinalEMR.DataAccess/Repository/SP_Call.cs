@@ -28,20 +28,16 @@ namespace FinalEMR.DataAccess.Repository
 
         public void Execute(string procedureName, DynamicParameters param = null)
         {
-            using (SqlConnection sqlCon = new SqlConnection(ConnectionString))
-            {
-                sqlCon.Open();
-                sqlCon.Execute(procedureName, param, commandType: System.Data.CommandType.StoredProcedure);
-            }
+            using SqlConnection sqlCon = new SqlConnection(ConnectionString);
+            sqlCon.Open();
+            sqlCon.Execute(procedureName, param, commandType: System.Data.CommandType.StoredProcedure);
         }
 
         public IEnumerable<T> List<T>(string procedureName, DynamicParameters param = null)
         {
-            using (SqlConnection sqlCon = new SqlConnection(ConnectionString))
-            {
-                sqlCon.Open();
-                return sqlCon.Query<T>(procedureName, param, commandType: System.Data.CommandType.StoredProcedure);
-            }
+            using SqlConnection sqlCon = new SqlConnection(ConnectionString);
+            sqlCon.Open();
+            return sqlCon.Query<T>(procedureName, param, commandType: System.Data.CommandType.StoredProcedure);
         }
 
         /*To retrieve more table add another IEnumerable to this*/
@@ -64,21 +60,17 @@ namespace FinalEMR.DataAccess.Repository
 
         public T OneRecord<T>(string procedureName, DynamicParameters param = null)
         {
-            using (SqlConnection sqlCon = new SqlConnection(ConnectionString))
-            {
-                sqlCon.Open();
-                var value = sqlCon.Query<T>(procedureName, param, commandType: System.Data.CommandType.StoredProcedure);
-                return (T)Convert.ChangeType(value.FirstOrDefault(), typeof(T));
-            }
+            using SqlConnection sqlCon = new SqlConnection(ConnectionString);
+            sqlCon.Open();
+            var value = sqlCon.Query<T>(procedureName, param, commandType: System.Data.CommandType.StoredProcedure);
+            return (T)Convert.ChangeType(value.FirstOrDefault(), typeof(T));
         }
 
         public T Single<T>(string procedureName, DynamicParameters param = null)
         {
-            using (SqlConnection sqlCon = new SqlConnection(ConnectionString))
-            {
-                sqlCon.Open();
-                return (T)Convert.ChangeType(sqlCon.ExecuteScalar<T>(procedureName, param, commandType: System.Data.CommandType.StoredProcedure), typeof(T));
-            }
+            using SqlConnection sqlCon = new SqlConnection(ConnectionString);
+            sqlCon.Open();
+            return (T)Convert.ChangeType(sqlCon.ExecuteScalar<T>(procedureName, param, commandType: System.Data.CommandType.StoredProcedure), typeof(T));
         }
     }
 }

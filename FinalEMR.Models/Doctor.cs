@@ -11,6 +11,7 @@ namespace FinalEMR.Models
         public int Id { get; set; }
 
         [Required]
+        [Display(Name = "Doctor Name")]
         [RegularExpression(@"^[a-zA-Z''-'\s]{1,40}$",
          ErrorMessage = "Characters are not allowed.")]
         public string Name { get; set; }

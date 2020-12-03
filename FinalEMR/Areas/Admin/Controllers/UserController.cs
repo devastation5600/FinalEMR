@@ -59,8 +59,7 @@ namespace FinalEMR.Areas.Admin.Controllers
                 }
 
             }
-
-            return Json(new { data = userList });
+            return Json(new { data = userList, });
         }
 
         [HttpPost]

@@ -122,6 +122,9 @@ namespace FinalEMR.DataAccess.Migrations
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
                     b.Property<string>("EmailAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -139,6 +142,9 @@ namespace FinalEMR.DataAccess.Migrations
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NurseId")
+                        .HasColumnType("int");
 
                     b.Property<int>("PhoneNumber")
                         .HasColumnType("int");
@@ -158,6 +164,10 @@ namespace FinalEMR.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AllergyId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("NurseId");
 
                     b.HasIndex("PrescriptionId");
 
@@ -487,6 +497,18 @@ namespace FinalEMR.DataAccess.Migrations
                     b.HasOne("FinalEMR.Models.Allergy", "Allergy")
                         .WithMany()
                         .HasForeignKey("AllergyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FinalEMR.Models.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FinalEMR.Models.Nurse", "Nurse")
+                        .WithMany()
+                        .HasForeignKey("NurseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

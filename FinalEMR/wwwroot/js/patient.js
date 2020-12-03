@@ -18,7 +18,9 @@ function loadDataTable() {
             { "data": "weight", "width": "8%" },
             { "data": "prescription.name", "width": "12%" },
             { "data": "comments", "width": "10%" },
-            { "data": "allergy.name", "width": "10%" },
+            { "data": "allergy.name", "width": "8%" },
+            { "data": "doctor.name", "width": "10%" },
+            { "data": "nurse.name", "width": "10%" },
             {
                 "data": "id",
                 "render": function (data) {

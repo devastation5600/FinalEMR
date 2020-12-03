@@ -1,169 +1,193 @@
 ﻿@model FinalEMR.Models.ViewModels.PatientVM
+@using FinalEMR.Utility
+
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     var title = "Create Patient";
 }
-
-<form method="post" enctype="multipart/form-data">
-    <div class="row p-3 border">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        @if (Model.Patient.Id != 0)
-        {
-            //edit
-            title = "Edit Patient";
-            <input type="hidden" asp-for="Patient.Id" />
-        }
-        <div class="col-12 border-bottom">
-            <h2 class="text-primary">@title</h2>
-        </div>
-        <div class="col-8 pt-4">
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="Patient.FirstName"></label>
+    <form method="post" enctype="multipart/form-data">
+        <div class="row p-3 border">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (Model.Patient.Id == 0)
+            {
+                //edit
+                title = "Create Patient";
+                <input type="hidden" asp-for="Patient.Id" />
+            }
+                <div class="col-12 border-bottom">
+                    <h2 class="text-primary">@title</h2>
                 </div>
-                <div class="col-8">
-                    <input asp-for="Patient.FirstName" class="form-control" />
-                    <span asp-validation-for="Patient.FirstName" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="Patient.LastName"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="Patient.LastName" class="form-control" />
-                    <span asp-validation-for="Patient.LastName" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="Patient.DateOfBirth"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="Patient.DateOfBirth" class="form-control" />
-                    <span asp-validation-for="Patient.DateOfBirth" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="Patient.Height"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="Patient.Height" class="form-control" />
-                    <span asp-validation-for="Patient.Height" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="Patient.Weight"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="Patient.Weight" class="form-control" />
-                    <span asp-validation-for="Patient.Weight" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="Patient.SocialSecurity"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="Patient.SocialSecurity" class="form-control" type="text"/>
-                    <span asp-validation-for="Patient.SocialSecurity" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    Prescriptions
-                </div>
-                <div class="col-8">
-                    @Html.DropDownListFor(m => m.Patient.PrescriptionId, Model.PrescriptionList as IEnumerable<SelectListItem>, "-Select a Prescription",
-                   new { @class = "form-control" })
-                    <span asp-validation-for="Patient.PrescriptionId" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="Patient.Comments"></label>
-                </div>
-                <div class="col-8">
-                    <textarea asp-for="Patient.Comments" class="form-control"></textarea>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    Allergy
-                </div>
-                <div class="col-8">
-                    @Html.DropDownListFor(m => m.Patient.AllergyId, Model.AllergyList as IEnumerable<SelectListItem>, "-Select a Allergy",
-                   new { @class = "form-control" })
-                    <span asp-validation-for="Patient.AllergyId" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="py-2 input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"> +1</span>
-                    </div>
-                    <input asp-for="Patient.PhoneNumber" type="text" placeholder="Phone Number" class="form-control" />
-                    <span asp-validation-for="Patient.PhoneNumber" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="Patient.EmailAddress"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="Patient.EmailAddress" class="form-control" />
-                    <span asp-validation-for="Patient.EmailAddress" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="Patient.Street"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="Patient.Street" class="form-control" />
-                    <span asp-validation-for="Patient.Street" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    Image
-                </div>
-                <div class="col-8">
-                    <input type="file" name="files" id="uploadBox" multiple class="form-control" />
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-8 offset-4">
-                    @if (Model.Patient.Id != 0)
-                    {
-                        <partial name="_EditAndBackToListButton" model="Model.Patient.Id" />
-                    }
-                    else
-                    {
-                        <div class="row">
-                            <div class="col">
-                                <button type="submit" onclick="return validateInput()" class="btn btn-primary form-control">Create</button>
-                            </div>
-                            <div class="col">
-                                <a asp-action="Index" class="btn btn-success form-control">Back to List</a>
-                            </div>
+                <div class="col-8 pt-4">
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="Patient.FirstName"></label>
                         </div>
+                        <div class="col-8">
+                            <input asp-for="Patient.FirstName" class="form-control" />
+                            <span asp-validation-for="Patient.FirstName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="Patient.LastName"></label>
+                        </div>
+                        <div class="col-8">
+                            <input asp-for="Patient.LastName" class="form-control" />
+                            <span asp-validation-for="Patient.LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="Patient.DateOfBirth"></label>
+                        </div>
+                        <div class="col-8">
+                            <input asp-for="Patient.DateOfBirth" class="form-control" />
+                            <span asp-validation-for="Patient.DateOfBirth" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="Patient.Height"></label>
+                        </div>
+                        <div class="col-8">
+                            <input asp-for="Patient.Height" class="form-control" />
+                            <span asp-validation-for="Patient.Height" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="Patient.Weight"></label>
+                        </div>
+                        <div class="col-8">
+                            <input asp-for="Patient.Weight" class="form-control" />
+                            <span asp-validation-for="Patient.Weight" class="text-danger"></span>
+                        </div>
+                    </div>
+                    @if (Model.Patient.Id == 0)
+                    {
+                        //create
+                            <div class="form-group row hide">
+                                <div class="col-4">
+                                    <label asp-for="Patient.SocialSecurity"></label>
+                                </div>
+                                <div class="col-8">
+                                    <input asp-for="Patient.SocialSecurity" class="form-control" type="text" />
+                                    <span asp-validation-for="Patient.SocialSecurity" class="text-danger"></span>
+                                </div>
+                            </div>
                     }
+                    <div class="form-group row">
+                        <div class="col-4">
+                            Prescriptions
+                        </div>
+                        <div class="col-8">
+                            @Html.DropDownListFor(m => m.Patient.PrescriptionId, Model.PrescriptionList as IEnumerable<SelectListItem>, "-Select a Prescription",
+                                new { @class = "form-control" })
+                            <span asp-validation-for="Patient.PrescriptionId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="Patient.Comments"></label>
+                        </div>
+                        <div class="col-8">
+                            <textarea asp-for="Patient.Comments" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-4">
+                            Allergy
+                        </div>
+                        <div class="col-8">
+                            @Html.DropDownListFor(m => m.Patient.AllergyId, Model.AllergyList as IEnumerable<SelectListItem>, "-Select a Allergy",
+            new { @class = "form-control" })
+                            <span asp-validation-for="Patient.AllergyId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-4">
+                            Doctor Name
+                        </div>
+                        <div class="col-8">
+                            @Html.DropDownListFor(m => m.Patient.DoctorId, Model.DoctorList as IEnumerable<SelectListItem>, "-Select a Doctor",
+            new { @class = "form-control" })
+                            <span asp-validation-for="Patient.DoctorId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-4">
+                            Doctor Name
+                        </div>
+                        <div class="col-8">
+                            @Html.DropDownListFor(m => m.Patient.NurseId, Model.NurseList as IEnumerable<SelectListItem>, "-Select a Nurse",
+            new { @class = "form-control" })
+                            <span asp-validation-for="Patient.NurseId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="py-2 input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> +1</span>
+                            </div>
+                            <input asp-for="Patient.PhoneNumber" type="text" placeholder="Phone Number" class="form-control" />
+                            <span asp-validation-for="Patient.PhoneNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="Patient.EmailAddress"></label>
+                        </div>
+                        <div class="col-8">
+                            <input asp-for="Patient.EmailAddress" class="form-control" />
+                            <span asp-validation-for="Patient.EmailAddress" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="Patient.Street"></label>
+                        </div>
+                        <div class="col-8">
+                            <input asp-for="Patient.Street" class="form-control" />
+                            <span asp-validation-for="Patient.Street" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-4">
+                            Image
+                        </div>
+                        <div class="col-8">
+                            <input type="file" name="files" id="uploadBox" multiple class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-8 offset-4">
+                            @if (Model.Patient.Id != 0)
+                            {
+                                <partial name="_EditAndBackToListButton" model="Model.Patient.Id" />
+                            }
+                            else
+                            {
+                                <div class="row">
+                                    <div class="col">
+                                        <button type="submit" onclick="return validateInput()" class="btn btn-primary form-control">Create</button>
+                                    </div>
+                                    <div class="col">
+                                        <a asp-action="Index" class="btn btn-success form-control">Back to List</a>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
                 </div>
+                @if (Model.Patient.Id != 0)
+                {
+                    <div class="col-3 offset-1 pt-4">
+                        <img src="@Model.Patient.ImageUrl" style=" width:100%; border-radius:5px; border:1px solid #bbb9b9" />
+                    </div>
+                }
             </div>
-        </div>
-        @if (Model.Patient.Id != 0)
-        {
-            <div class="col-3 offset-1 pt-4">
-                <img src="@Model.Patient.ImageUrl" style=" width:100%; border-radius:5px; border:1px solid #bbb9b9" />
-            </div>
-        }
-    </div>
-</form>
-
+    </form>
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
     <script src="https://cdn.tiny.cloud/1/knq7ld8f5qkwiq9sm5m6ku3pulwcmc1q9gvsfuydpm4ijusa/tinymce/5/tinymce.min.js"></script>

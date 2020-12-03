@@ -20,7 +20,17 @@ namespace FinalEMR.DataAccess.Repository
 
         public void Update(Doctor doctor)
         {
-            _db.Update(_db);
+            var objFromDb = _db.Doctors.FirstOrDefault(s => s.Id == doctor.Id);
+            if (objFromDb != null)
+            {
+                objFromDb.Name = doctor.Name;
+                objFromDb.EmailAddress = doctor.EmailAddress;
+                objFromDb.City = doctor.City;
+                objFromDb.PhoneNumber = doctor.PhoneNumber;
+                objFromDb.StreetAddress = doctor.StreetAddress;
+                objFromDb.PostalCode = doctor.PostalCode;
+                objFromDb.State = doctor.State;
+            }
         }
     }
 }

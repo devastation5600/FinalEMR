@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc.ActionConstraints;
 namespace FinalEMR.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Doctor)]
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Doctor + "," + SD.Role_Privi_Nurse + "," + SD.Role_Nurse)]
     public class NurseController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -25,6 +25,7 @@ namespace FinalEMR.Areas.Admin.Controllers
         {
             return View();
         }
+        [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Doctor +  "," + SD.Role_Privi_Nurse)]
         public IActionResult Upsert(int? id)
         {
             Nurse nurse = new Nurse();
