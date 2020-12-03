@@ -30,7 +30,7 @@ namespace FinalEMR.DataAccess.Initiliazer
                     _db.Database.Migrate();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
