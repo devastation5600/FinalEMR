@@ -43,7 +43,7 @@ namespace FinalEMR.Areas.Staff.Controllers
                 Patient = patientFromDb,
                 PatientId = patientFromDb.Id
             };*/
-            return View(/*recordObj*/);
+            return View(patientFromDb);
         }
         
         [HttpPost]
