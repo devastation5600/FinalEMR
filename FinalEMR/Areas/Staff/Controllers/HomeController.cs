@@ -30,14 +30,14 @@ namespace FinalEMR.Areas.Staff.Controllers
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            IEnumerable<Patient> patientList = _unitOfWork.Patient.GetAll(includeProperties: "Prescription,Allergy");
+            IEnumerable<Patient> patientList = _unitOfWork.Patient.GetAll(includeProperties: "Prescription,Allergy,Doctor,Nurse");
             return View(patientList);
         }
 
         public IActionResult Details(int id)    
         {
             var patientFromDb = _unitOfWork.Patient
-                                .GetFirstOrDefault(u => u.Id == id, includeProperties:"Prescription,Allergy");
+                                .GetFirstOrDefault(u => u.Id == id, includeProperties: "Prescription,Allergy,Doctor,Nurse");
            /* Record recordObj = new Record()
             {
                 Patient = patientFromDb,

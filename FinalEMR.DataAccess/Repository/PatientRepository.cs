@@ -30,7 +30,7 @@ namespace FinalEMR.DataAccess.Repository
                 objFromDb.FirstName = patient.FirstName;
                 objFromDb.LastName = patient.LastName;
                 objFromDb.DateOfBirth = patient.DateOfBirth;
-                objFromDb.Comments = patient.Comments;
+                objFromDb.Comments = patient.Comments;/* + System.DateTime.Now;*/
                 objFromDb.Height = patient.Height;
                 objFromDb.Weight = patient.Weight;
                 objFromDb.PhoneNumber = patient.PhoneNumber;
